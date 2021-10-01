@@ -3,7 +3,7 @@ var svgWidth = 825;
 var svgHeight = 500;
 
 var margin = {
-  top: 20,
+  top: 40,
   right: 40,
   bottom: 80,
   left: 80
@@ -123,10 +123,10 @@ d3.csv("data.csv").then(function(healthData) {
     .text("Average Age");
 
   chartGroup.append("text")
-    .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
+    .attr("transform", `translate(${width / 2}, ${height + margin.top + 10})`)
     .attr("class", "axisText")
     .attr("class", "axis-text")
-    .text("Smokes (%)");
+    .text("Smokers (%)");
 
 
 }).catch(function(error) {

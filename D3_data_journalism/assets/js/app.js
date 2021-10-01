@@ -6,7 +6,7 @@ var margin = {
   top: 20,
   right: 40,
   bottom: 80,
-  left: 20
+  left: 80
 };
 
 var width = svgWidth - margin.left - margin.right;
@@ -32,7 +32,7 @@ d3.csv("data.csv").then(function(healthData) {
   healthData.forEach(function(data) {
     data.smokes = +data.smokes;
     data.age = +data.age;
-    console.log(data.age)
+    // console.log(data.age)
   });
 
   // Step 2: Create scale functions
@@ -77,7 +77,7 @@ d3.csv("data.csv").then(function(healthData) {
     .attr("class", "tooltip")
     .offset([80, -100])
     .html(function(d) {
-      return (`<strong>${d.state}</strong><hr>Number of smokes: ${d.smokes}<br>Age: ${d.age}`);
+      return (`<strong>${d.state}</strong><hr>% smokers: ${d.smokes}%<br>Average age: ${d.age} years`);
     });
 
   // // Step 7: Create tooltip in the chart
@@ -95,7 +95,7 @@ d3.csv("data.csv").then(function(healthData) {
     });
 
 
-  // Create circle labels
+    // Create circle labels
   var circleLabels = chartGroup.selectAll(null).data(healthData).enter().append('text');
 
   circleLabels
@@ -111,21 +111,24 @@ d3.csv("data.csv").then(function(healthData) {
     .attr("font-family", "sans-serif")
     .attr("font-size", "10px")
     .attr("text-anchor", "middle")
-    .attr("fill", "white");
+    .attr("fill", "red");
 
-  // // Create axes labels
-  // circlesGroup.append("text")
-  //   .attr("transform", "rotate(-90)")
-  //   .attr("y", 0 - margin.left + 40)
-  //   .attr("x", 0 - (height / 2))
-  //   .attr("dy", "1em")
-  //   .attr("class", "axis-text")
-  //   .text(`${d.state}`);
+    // Create axes labels
+  chartGroup.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left + 30)
+    .attr("x", 0 - (height / 2))
+    .attr("dy", "1em")
+    .attr("class", "axis-text")
+    .text("Average Age");
 
-  // chartGroup.append("text")
-  //   .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
-  //   .attr("class", "axisText")
-  //   .text("Hair Metal Band Hair Length (inches)");
+  chartGroup.append("text")
+    .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
+    .attr("class", "axisText")
+    .attr("class", "axis-text")
+    .text("Smokes (%)");
+
+
 }).catch(function(error) {
   console.log(error);
 });

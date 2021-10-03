@@ -24,6 +24,10 @@ var svg = d3
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
+// Set initial x-axis value
+var chosenXAxis = "smokers"
+
+
 // Import Data
 d3.csv("data.csv").then(function(healthData) {
 

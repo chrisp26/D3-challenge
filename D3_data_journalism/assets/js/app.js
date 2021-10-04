@@ -25,8 +25,30 @@ var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Set initial x-axis value
-var chosenXAxis = "smokers"
+var chosenXAxis = "smokes"
+var chosenYAxis = "age"
 
+// Function for updating x-scale var when axis label clicked
+function xScale(healthData, chosenXAxis){
+  // create scales
+  var xLinearScale = d3.scaleLinear()
+  .domain([d3.min(healthData, d => d[chosenXAxis]) * .8,
+    d3.max(healthData, d => d[chosenXAxis]) * 1.2])
+    .range([0, width]);
+
+  return xLinearScale;
+}
+
+// Function for updating y-scale var when axis label clicked
+function yScale(healthData, chosenYAxis){
+  // create scales
+  var yLinearScale = d3.scaleLinear()
+  .domain([d3.min(healthData, d => d[chosenYAxis]) * .95,
+    d3.max(healthData, d => d[chosenYAxis]) * 1.05])
+    .range([0, height]);
+
+  return yLinearScale;
+}
 
 // Import Data
 d3.csv("data.csv").then(function(healthData) {
@@ -41,13 +63,19 @@ d3.csv("data.csv").then(function(healthData) {
 
   // Step 2: Create scale functions
   // ==============================
-  var xLinearScale = d3.scaleLinear()
-    .domain([8, d3.max(healthData, d => d.smokes)])
-    .range([0, width]);
+  // OLD X
+  // var xLinearScale = d3.scaleLinear()
+  //   .domain([8, d3.max(healthData, d => d.smokes)])
+  //   .range([0, width]);
 
-  var yLinearScale = d3.scaleLinear()
-    .domain([26, d3.max(healthData, d => d.age)])
-    .range([height, 0]);
+  var xLinearScale = xScale(healthData, chosenXAxis); //NEW
+
+  // OLD Y
+  // var yLinearScale = d3.scaleLinear()
+  //   .domain([26, d3.max(healthData, d => d.age)])
+  //   .range([height, 0]);
+
+  var yLinearScale = yScale(healthData, chosenYAxis); //NEW
 
   // Step 3: Create axis functions
   // ==============================
@@ -56,7 +84,7 @@ d3.csv("data.csv").then(function(healthData) {
 
   // Step 4: Append Axes to the chart
   // ==============================
-  chartGroup.append("g")
+  var xAxis = chartGroup.append("g")
     .attr("transform", `translate(0, ${height})`)
     .call(bottomAxis);
 
@@ -69,7 +97,7 @@ d3.csv("data.csv").then(function(healthData) {
   .data(healthData)
   .enter()
   .append("circle")
-  .attr("cx", d => xLinearScale(d.smokes))
+  .attr("cx", d => xLinearScale(d[chosenXAxis]))
   .attr("cy", d => yLinearScale(d.age))
   .attr("r", "15")
   .attr("fill", "pink")
